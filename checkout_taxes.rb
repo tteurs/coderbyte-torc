@@ -1,4 +1,4 @@
-class Item
+class CheckoutTaxes
   attr_reader :name, :quantity, :price, :exempt, :imported
 
   def initialize(name, quantity, price, exempt, imported)
@@ -24,7 +24,7 @@ class Item
   end
 
   def total_price
-    (price + sales_tax + import_tax) * quantity
+    ((price + sales_tax + import_tax) * quantity).round(2)
   end
 
   def to_s
@@ -53,7 +53,7 @@ def parse_input(input)
     match = /(\d+) (.+) at (\d+\.\d{2})/.match(line)
     exempt = %w[book food medical].any? { |word| match[2].include?(word) }
     imported = match[2].include?("imported")
-    Item.new(match[2], match[1], match[3], exempt, imported)
+    CheckoutTaxes.new(match[2], match[1], match[3], exempt, imported)
   end
 end
 
